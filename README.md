@@ -1,119 +1,90 @@
-# 🚀 Samira Aboutarik — Portfolio
+# Samira Aboutarik — Portfolio v3
 
-Portfolio personnel ultra-moderne construit avec **React + Vite + Tailwind CSS + Framer Motion**.
+Portfolio personnel ultra-moderne de Samira Aboutarik, développeuse Full Stack.
 
----
-
-## 🛠️ Stack technique
-
-| Outil | Usage |
-|---|---|
-| React 18 | UI / composants |
-| Vite | Bundler rapide |
-| Tailwind CSS v3 | Styling utility-first |
-| Framer Motion | Animations fluides |
-| react-type-animation | Typewriter effect |
-| react-countup | Compteurs animés |
-| react-intersection-observer | Scroll animations |
-| react-scroll | Navigation smooth |
-| react-icons | Icônes |
+🌐 **Live demo :** [portfolio-samira.vercel.app](https://portfolio-samira.vercel.app)
 
 ---
 
-## 📁 Structure du projet
+## ✨ Features
+
+| Feature | Description |
+|---------|-------------|
+| 🌙 Dark / Light mode | Persisté en localStorage |
+| 🇫🇷/🇬🇧 Multi-langue | Français / Anglais, toggle en navbar |
+| 🖱️ Custom cursor | Ring magnétique avec dot, réagit aux hover |
+| ✨ Preloader | Splash screen compteur 000→100 |
+| 🧲 Magnetic buttons | Boutons CTA qui suivent le curseur |
+| 🌐 Particle background | Grille canvas qui réagit à la souris |
+| ⌨️ Typewriter | Animation dans le hero |
+| 📊 Skill bars animées | Avec icônes de brand (Si*) + spring bounce |
+| 🗂️ Filtres projets | AnimatePresence + layout animation |
+| 📅 Timeline Experience | Zigzag alterné gauche/droite |
+| 📈 Compteurs animés | react-countup au scroll |
+| 🤖 Chatbot | Assistant virtuel avec quick replies |
+| 🥚 Easter Egg | Konami Code → confetti + modal secret |
+| 📜 Scroll progress bar | En haut de page |
+| 📱 Fully responsive | Mobile-first |
+
+### 🥚 Easter Egg
+Tape **↑ ↑ ↓ ↓ ← → ← → B A** sur ton clavier pour activer le secret !
+
+---
+
+## 🛠️ Stack
+
+React 18 · Vite · Tailwind CSS 3 · Framer Motion · react-type-animation · react-intersection-observer · react-countup · react-icons · react-scroll · react-confetti
+
+---
+
+## 🚀 Installation
+
+```bash
+npm install
+npm run dev
+# → http://localhost:5173
+```
+
+---
+
+## 📁 Structure
 
 ```
 src/
 ├── components/
-│   ├── Navbar.jsx           # Navigation fixe + dark mode toggle
-│   ├── Hero.jsx             # Section hero + typewriter
-│   ├── About.jsx            # À propos + avatar animé
-│   ├── Skills.jsx           # Compétences avec barres animées
-│   ├── Projects.jsx         # Projets avec filtres
-│   ├── ProjectModal.jsx     # Modal détail projet
-│   ├── Stats.jsx            # Compteurs animés
-│   ├── Contact.jsx          # Formulaire de contact
-│   ├── Chatbot.jsx          # Assistant virtuel chatbot
-│   ├── Footer.jsx           # Pied de page
-│   ├── ScrollToTop.jsx      # Bouton retour en haut
-│   └── ScrollProgressBar.jsx # Barre de progression scroll
-├── data/
-│   └── index.js             # Toutes les données du portfolio
+│   ├── CustomCursor.jsx      ← Curseur personnalisé magnétique
+│   ├── Preloader.jsx         ← Splash screen
+│   ├── ParticleBackground.jsx← Canvas dot grid interactif
+│   ├── MagneticButton.jsx    ← Bouton magnétique Framer
+│   ├── EasterEgg.jsx         ← Konami code + confetti
+│   ├── Navbar.jsx            ← Nav flottante + lang toggle
+│   ├── Hero.jsx              ← Typewriter + CTA
+│   ├── About.jsx             ← Avatar animé + orbit
+│   ├── Skills.jsx            ← Brand icons + skill bars
+│   ├── Experience.jsx        ← Timeline zigzag
+│   ├── Projects.jsx          ← Filter + layout animation
+│   ├── ProjectModal.jsx      ← Modal détails
+│   ├── Stats.jsx             ← CountUp
+│   ├── Contact.jsx           ← Form validé
+│   ├── Chatbot.jsx           ← Assistant virtuel
+│   ├── Footer.jsx
+│   ├── ScrollProgressBar.jsx
+│   └── ScrollToTop.jsx
+├── data/index.js             ← Projets, skills, chatbot
+├── i18n/translations.js      ← FR + EN complet
 ├── hooks/
-│   ├── useDarkMode.js       # Hook dark/light mode
-│   └── useScrollProgress.js # Hook progression scroll
-├── App.jsx                  # Composant racine
-├── main.jsx                 # Point d'entrée React
-└── index.css                # Styles globaux + Tailwind
+│   ├── useDarkMode.js
+│   ├── useScrollProgress.js
+│   └── useLang.js
+└── App.jsx
 ```
 
 ---
 
-## 🚀 Installation & démarrage
+## 🌐 Deploy Vercel
 
 ```bash
-# 1. Installer les dépendances
-npm install
-
-# 2. Lancer en développement
-npm run dev
-
-# 3. Build pour production
-npm run build
-
-# 4. Prévisualiser le build
-npm run preview
+npm i -g vercel && vercel
 ```
 
----
-
-## ✏️ Personnalisation
-
-### Modifier les projets
-Éditer `src/data/index.js` → tableau `PROJECTS`
-
-### Modifier les compétences
-Éditer `src/data/index.js` → objet `SKILLS`
-
-### Ajouter un CV téléchargeable
-Placer le fichier `CV_Samira_Aboutarik.pdf` dans le dossier `public/`
-
-### Modifier les couleurs
-Les couleurs principales sont définies dans `src/index.css` :
-- Gradient principal : `#a855f7` → `#818cf8` → `#06b6d4`
-
----
-
-## 🌟 Fonctionnalités
-
-- ✅ Dark / Light mode (persistant via localStorage)
-- ✅ Typewriter animation dans le hero
-- ✅ Scroll progress bar
-- ✅ Animations au scroll (Framer Motion + IntersectionObserver)
-- ✅ Skill bars animées
-- ✅ Projets filtrables par technologie
-- ✅ Modal de détail projet
-- ✅ Stats avec compteurs animés
-- ✅ Chatbot virtuel avec quick replies
-- ✅ Formulaire de contact avec validation
-- ✅ Responsive mobile-first
-- ✅ SEO-friendly (meta tags)
-- ✅ Scroll-to-top button
-
----
-
-## 📦 Déploiement sur Vercel
-
-```bash
-# Option 1 : Via CLI Vercel
-npm install -g vercel
-vercel
-
-# Option 2 : Push sur GitHub → importer dans Vercel
-# Build command : npm run build
-# Output directory : dist
-```
-
----
-
-Made with ❤️ by Samira Aboutarik · Agadir, Maroc 🇲🇦
+Développé avec ❤️ à Agadir, Maroc 🇲🇦

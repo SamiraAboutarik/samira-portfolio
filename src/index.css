@@ -29,6 +29,10 @@
     background-clip: text;
   }
 
+  .grad-btn-static {
+    background: linear-gradient(135deg, #a855f7, #818cf8, #06b6d4);
+  }
+
   .grad-btn {
     background: linear-gradient(135deg, #a855f7, #818cf8, #06b6d4);
     background-size: 200% 200%;
@@ -85,6 +89,13 @@
 }
 
 @layer utilities {
+  .section-alt {
+    background: rgba(255,255,255,0.012);
+  }
+  .dark .section-alt {
+    background: rgba(255,255,255,0.012);
+  }
+
   .noise-bg::before {
     content: '';
     position: fixed;
