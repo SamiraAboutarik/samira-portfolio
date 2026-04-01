@@ -1,35 +1,9 @@
 import React from 'react'
 import { motion } from 'framer-motion'
 import { useInView } from 'react-intersection-observer'
-import { HiAcademicCap, HiComputerDesktop, HiCodeBracket, HiLightBulb } from 'react-icons/hi2'
+import { EducationS} from '../data/index'
 
-const EducationS = [
-  {
-    id: 1,
-    type: 'education',
-    Icon: HiAcademicCap,
-    gradient: 'from-orange-500 to-pink-500',
-    date: '2022 – 2023',
-    title: "Bachelor's Degree – Physical Sciences",
-    org: 'High School',
-    desc: 'Completed a scientific high school diploma specializing in Physical Sciences.',
-    tags: ['Physics', 'Mathematics', 'Sciences'],
-    current: false,
-  },
-  {
-    id: 2,
-    type: 'education',
-    Icon: HiComputerDesktop,
-    gradient: 'from-violet-500 to-pink-500',
-    date: '2024 – Present',
-    title: 'Digital Development Student',
-    org: 'OFPPT Ait Melloul',
-    desc: 'Currently studying as a Specialized Technician in Digital Development at OFPPT Ait Melloul. Expected graduation: June 2026.',
-    tags: ['Laravel', 'React', 'PHP', 'MySQL', 'Full Stack'],
-    current: true,
-  }
-  
-]
+
 
 export default function Education({ dark }) {
   const { ref, inView } = useInView({ triggerOnce: true, threshold: 0.08 })

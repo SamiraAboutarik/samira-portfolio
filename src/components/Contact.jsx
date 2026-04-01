@@ -2,11 +2,12 @@ import React, { useState } from 'react'
 import { motion } from 'framer-motion'
 import { useInView } from 'react-intersection-observer'
 import { HiPaperAirplane, HiEnvelope, HiMapPin, HiBriefcase } from 'react-icons/hi2'
-import { FiGithub, FiLinkedin } from 'react-icons/fi'
+import { FiGithub, FiLinkedin ,FiPhone} from 'react-icons/fi'
 
 const CONTACT_INFO = [
   { Icon: HiEnvelope, label: 'Email',    value: 'samiraaboutarik45@gmail.com',       href: 'mailto:samiraaboutarik45@gmail.com', color: 'bg-purple-500/10 text-purple-400' },
   { Icon: FiLinkedin, label: 'LinkedIn', value: 'linkedin.com/in/samira-aboutarik', href: '#',                                  color: 'bg-blue-500/10 text-blue-400' },
+  { Icon: FiPhone,    label: 'Téléphone',   value: '+212 6 41 32 22 97',             href: 'tel:+212641322297',                  color: 'bg-green-500/10 text-green-400' },
   { Icon: FiGithub,   label: 'GitHub',   value: 'github.com/SamiraAboutarik',       href: 'https://github.com/SamiraAboutarik', color: 'bg-gray-500/10 text-gray-400' },
   { Icon: HiMapPin,   label: 'Location', value: 'Agadir, Morocco 🇲🇦',              href: '#',                                  color: 'bg-red-500/10 text-red-400' },
 ]

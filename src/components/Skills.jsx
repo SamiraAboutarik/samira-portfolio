@@ -1,58 +1,9 @@
 import React, { useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { useInView } from 'react-intersection-observer'
-import {
-  SiHtml5, SiCss, SiJavascript, SiReact, SiTailwindcss, SiBootstrap,
-  SiPhp, SiLaravel, SiMysql, SiMongodb, SiPython, SiGit, SiGithub,
-  SiNodedotjs, SiTypescript, SiDocker, SiLinux, SiFigma,
-} from 'react-icons/si'
-import { HiServerStack } from 'react-icons/hi2'
-
-const SKILLS = {
-  Frontend: [
-    { name: 'HTML5',        level: 88, Icon: SiHtml5,       color: '#E34F26' },
-    { name: 'CSS3',         level: 86, Icon: SiCss,         color: '#1572B6' },
-    { name: 'JavaScript',   level: 78, Icon: SiJavascript,  color: '#F7DF1E' },
-    { name: 'React',        level: 75, Icon: SiReact,       color: '#61DAFB' },
-    { name: 'Tailwind CSS', level: 82, Icon: SiTailwindcss, color: '#38BDF8' },
-    { name: 'Bootstrap',    level: 85, Icon: SiBootstrap,   color: '#7952B3' },
-  ],
-  Backend: [
-    { name: 'PHP',     level: 75, Icon: SiPhp,     color: '#777BB4' },
-    { name: 'Laravel', level: 78, Icon: SiLaravel, color: '#FF2D20' },
-    { name: 'MySQL',   level: 72, Icon: SiMysql,   color: '#4479A1' },
-    { name: 'MongoDB', level: 60, Icon: SiMongodb, color: '#47A248' },
-  ],
-  Other: [
-    { name: 'Python',    level: 55, Icon: SiPython,      color: '#3776AB' },
-    { name: 'Git',       level: 82, Icon: SiGit,         color: '#F05032' },
-    { name: 'GitHub',    level: 80, Icon: SiGithub,      color: '#6b7280' },
-    { name: 'REST APIs', level: 78, Icon: HiServerStack, color: '#a855f7' },
-  ],
-}
-
-// Two rows for the marquee — row 2 scrolls in reverse
-const ROW1 = [
-  { name: 'React',       Icon: SiReact,       color: '#61DAFB' },
-  { name: 'Laravel',     Icon: SiLaravel,     color: '#FF2D20' },
-  { name: 'JavaScript',  Icon: SiJavascript,  color: '#F7DF1E' },
-  { name: 'Tailwind',    Icon: SiTailwindcss, color: '#38BDF8' },
-  { name: 'PHP',         Icon: SiPhp,         color: '#777BB4' },
-  { name: 'MySQL',       Icon: SiMysql,       color: '#4479A1' },
-  { name: 'HTML5',       Icon: SiHtml5,       color: '#E34F26' },
-  { name: 'Bootstrap',   Icon: SiBootstrap,   color: '#7952B3' },
-]
-
-const ROW2 = [
-  { name: 'MongoDB',     Icon: SiMongodb,     color: '#47A248' },
-  { name: 'Python',      Icon: SiPython,      color: '#3776AB' },
-  { name: 'Git',         Icon: SiGit,         color: '#F05032' },
-  { name: 'GitHub',      Icon: SiGithub,      color: '#6b7280' },
-  { name: 'CSS3',        Icon: SiCss,         color: '#1572B6' },
-  { name: 'REST APIs',   Icon: HiServerStack, color: '#a855f7' },
-  { name: 'Node.js',     Icon: SiNodedotjs,   color: '#339933' },
-  { name: 'Linux',       Icon: SiLinux,       color: '#FCC624' },
-]
+import { SKILLS } from '../data/index'
+import { ROW1 } from '../data/index'
+import { ROW2 } from '../data/index'
 
 // Marquee item component
 function MarqueeItem({ item, dark }) {
