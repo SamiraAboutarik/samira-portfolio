@@ -53,7 +53,7 @@ export default function Navbar({ dark, toggleDark }) {
         </div>
 
         <div className="flex items-center gap-1.5 shrink-0">
-          <motion.button whileHover={{ scale: 1.08 }} whileTap={{ scale: 0.95 }} onClick={toggleDark}
+          <motion.button aria-label="Changer le thème" whileHover={{ scale: 1.08 }} whileTap={{ scale: 0.95 }} onClick={toggleDark}
             className={`w-9 h-9 rounded-xl flex items-center justify-center transition-colors ${dark ? 'bg-white/8 hover:bg-white/14 text-gray-300' : 'bg-gray-100 hover:bg-gray-200 text-gray-600'}`}>
             <AnimatePresence mode="wait">
               {dark
@@ -69,7 +69,7 @@ export default function Navbar({ dark, toggleDark }) {
             <HiArrowDownTray size={13} /> CV
           </motion.a>
 
-          <motion.button whileTap={{ scale: 0.93 }} onClick={() => setMenuOpen(o => !o)}
+          <motion.button aria-label="Menu navigation" whileTap={{ scale: 0.93 }} onClick={() => setMenuOpen(o => !o)}
             className={`md:hidden w-9 h-9 flex items-center justify-center rounded-xl ${dark ? 'bg-white/8 text-gray-300' : 'bg-gray-100 text-gray-600'}`}>
             {menuOpen ? <HiXMark size={18} /> : <HiBars3 size={18} />}
           </motion.button>

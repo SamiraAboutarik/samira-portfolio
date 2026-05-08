@@ -1,20 +1,24 @@
-import React, { useState } from 'react'
+import React, { useRef, useState } from 'react'
 import { motion } from 'framer-motion'
 import { useInView } from 'react-intersection-observer'
+import emailjs from '@emailjs/browser'
 import { HiPaperAirplane, HiEnvelope, HiMapPin, HiBriefcase } from 'react-icons/hi2'
 import { FiGithub, FiLinkedin ,FiPhone} from 'react-icons/fi'
 
 const CONTACT_INFO = [
-  { Icon: HiEnvelope, label: 'Email',    value: 'samiraaboutarik45@gmail.com',       href: 'mailto:samiraaboutarik45@gmail.com', color: 'bg-purple-500/10 text-purple-400' },
-  { Icon: FiLinkedin, label: 'LinkedIn', value: 'linkedin.com/in/samira-aboutarik', href: '#',                                  color: 'bg-blue-500/10 text-blue-400' },
+  { Icon: HiEnvelope, label: 'Email',    value: 'samira.aboutarik@gmail.com',        href: 'mailto:samira.aboutarik@gmail.com',  color: 'bg-purple-500/10 text-purple-400' },
+  { Icon: FiLinkedin, label: 'LinkedIn', value: 'linkedin.com/in/samira-aboutarik', href: null,                                 color: 'bg-blue-500/10 text-blue-400' },
   { Icon: FiPhone,    label: 'Téléphone',   value: '+212 6 41 32 22 97',             href: 'tel:+212641322297',                  color: 'bg-green-500/10 text-green-400' },
   { Icon: FiGithub,   label: 'GitHub',   value: 'github.com/SamiraAboutarik',       href: 'https://github.com/SamiraAboutarik', color: 'bg-gray-500/10 text-gray-400' },
-  { Icon: HiMapPin,   label: 'Location', value: 'Agadir, Morocco 🇲🇦',              href: '#',                                  color: 'bg-red-500/10 text-red-400' },
+  { Icon: HiMapPin,   label: 'Location', value: 'Agadir, Morocco 🇲🇦',              href: null,                                 color: 'bg-red-500/10 text-red-400' },
 ]
 
 export default function Contact({ dark }) {
   const { ref, inView } = useInView({ triggerOnce: true, threshold: 0.1 })
+  const formRef = useRef(null)
   const [submitted, setSubmitted] = useState(false)
+  const [submitError, setSubmitError] = useState('')
+  const [sending, setSending] = useState(false)
   const [form, setForm]     = useState({ name: '', email: '', subject: '', message: '' })
   const [errors, setErrors] = useState({})
   const [focused, setFocused] = useState(null)
@@ -28,14 +32,30 @@ export default function Contact({ dark }) {
     return e
   }
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault()
     const errs = validate()
     if (Object.keys(errs).length) { setErrors(errs); return }
     setErrors({})
-    setSubmitted(true)
-    setTimeout(() => setSubmitted(false), 5000)
-    setForm({ name: '', email: '', subject: '', message: '' })
+    setSubmitted(false)
+    setSubmitError('')
+    setSending(true)
+
+    try {
+      await emailjs.sendForm(
+        import.meta.env.VITE_EMAILJS_SERVICE_ID,
+        import.meta.env.VITE_EMAILJS_TEMPLATE_ID,
+        formRef.current,
+        { publicKey: import.meta.env.VITE_EMAILJS_PUBLIC_KEY }
+      )
+      setSubmitted(true)
+      setTimeout(() => setSubmitted(false), 5000)
+      setForm({ name: '', email: '', subject: '', message: '' })
+    } catch (error) {
+      setSubmitError('Message could not be sent. Please try again later.')
+    } finally {
+      setSending(false)
+    }
   }
 
   const fieldClass = (name) => `
@@ -61,8 +81,10 @@ export default function Contact({ dark }) {
 
         <div className="grid md:grid-cols-2 gap-12">
           <motion.div initial={{ opacity: 0, x: -30 }} animate={inView ? { opacity: 1, x: 0 } : {}} transition={{ duration: 0.7, delay: 0.2 }} className="space-y-4">
-            {CONTACT_INFO.map(({ Icon, label, value, href, color }) => (
-              <motion.a key={label} href={href} whileHover={{ x: 6 }}
+            {CONTACT_INFO.map(({ Icon, label, value, href, color }) => {
+              const ContactTag = href ? motion.a : motion.div
+              return (
+              <ContactTag key={label} {...(href ? { href } : {})} whileHover={{ x: 6 }}
                 className={`flex items-center gap-4 p-4 rounded-2xl border transition-all duration-300 group ${dark ? 'bg-white/[0.03] border-white/[0.06] hover:border-white/[0.15]' : 'bg-white border-gray-100 shadow-sm hover:shadow-md'}`}>
                 <div className={`w-11 h-11 rounded-xl flex items-center justify-center shrink-0 transition-transform group-hover:scale-110 ${color}`}>
                   <Icon size={18} />
@@ -71,8 +93,8 @@ export default function Contact({ dark }) {
                   <div className={`text-xs mb-0.5 font-medium ${dark ? 'text-gray-500' : 'text-gray-400'}`}>{label}</div>
                   <div className={`text-sm font-semibold ${dark ? 'text-gray-200' : 'text-gray-800'}`}>{value}</div>
                 </div>
-              </motion.a>
-            ))}
+              </ContactTag>
+            )})}
             <div className="grad-btn p-6 rounded-2xl text-white text-center shadow-lg shadow-purple-500/20 mt-2">
               <HiBriefcase size={28} className="mx-auto mb-3 opacity-90" />
               <p className="font-display font-bold text-xl mb-1">Available now</p>
@@ -80,47 +102,58 @@ export default function Contact({ dark }) {
             </div>
           </motion.div>
 
-          <motion.form onSubmit={handleSubmit} noValidate
+          <motion.form ref={formRef} onSubmit={handleSubmit} noValidate
             initial={{ opacity: 0, x: 30 }} animate={inView ? { opacity: 1, x: 0 } : {}} transition={{ duration: 0.7, delay: 0.3 }}
             className={`rounded-2xl p-7 border space-y-5 ${dark ? 'bg-white/[0.03] border-white/[0.06]' : 'bg-white border-gray-100 shadow-lg'}`}>
-            <div className="grid grid-cols-2 gap-4">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               {[
                 { id: 'name',  label: 'Name *',  placeholder: 'Your name',         type: 'text' },
                 { id: 'email', label: 'Email *', placeholder: 'your@email.com',    type: 'email' },
               ].map(f => (
                 <div key={f.id}>
                   <label className={`text-xs font-semibold mb-2 block ${dark ? 'text-gray-400' : 'text-gray-500'}`}>{f.label}</label>
-                  <input type={f.type} placeholder={f.placeholder} value={form[f.id]}
+                  <input name={f.id} type={f.type} placeholder={f.placeholder} value={form[f.id]}
+                    aria-invalid={errors[f.id] ? 'true' : undefined}
+                    aria-describedby={errors[f.id] ? `${f.id}-error` : undefined}
                     onChange={e => setForm(p => ({ ...p, [f.id]: e.target.value }))}
                     onFocus={() => setFocused(f.id)} onBlur={() => setFocused(null)}
                     className={fieldClass(f.id)} />
-                  {errors[f.id] && <p className="text-red-400 text-xs mt-1">{errors[f.id]}</p>}
+                  {errors[f.id] && <p id={`${f.id}-error`} className="text-red-400 text-xs mt-1">{errors[f.id]}</p>}
                 </div>
               ))}
             </div>
             <div>
               <label className={`text-xs font-semibold mb-2 block ${dark ? 'text-gray-400' : 'text-gray-500'}`}>Subject</label>
-              <input type="text" placeholder="Internship · Project · Collaboration..."
+              <input name="subject" type="text" placeholder="Internship · Project · Collaboration..."
                 value={form.subject} onChange={e => setForm(p => ({ ...p, subject: e.target.value }))}
                 onFocus={() => setFocused('subject')} onBlur={() => setFocused(null)} className={fieldClass('subject')} />
             </div>
             <div>
               <label className={`text-xs font-semibold mb-2 block ${dark ? 'text-gray-400' : 'text-gray-500'}`}>Message *</label>
-              <textarea rows={5} placeholder="Tell me about your project or opportunity..."
+              <textarea name="message" rows={5} placeholder="Tell me about your project or opportunity..."
+                aria-invalid={errors.message ? 'true' : undefined}
+                aria-describedby={errors.message ? 'message-error' : undefined}
                 value={form.message} onChange={e => setForm(p => ({ ...p, message: e.target.value }))}
                 onFocus={() => setFocused('message')} onBlur={() => setFocused(null)}
                 className={`${fieldClass('message')} resize-none`} />
-              {errors.message && <p className="text-red-400 text-xs mt-1">{errors.message}</p>}
+              {errors.message && <p id="message-error" className="text-red-400 text-xs mt-1">{errors.message}</p>}
             </div>
-            <motion.button type="submit" whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }}
+            <motion.button type="submit" disabled={sending} whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }}
               className="w-full grad-btn text-white font-semibold py-4 rounded-xl flex items-center justify-center gap-2.5 shadow-lg shadow-purple-500/20">
-              <HiPaperAirplane size={17} /> Send message
+              <HiPaperAirplane size={17} /> {sending ? 'Sending...' : 'Send message'}
             </motion.button>
             {submitted && (
-              <motion.div initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }}
+              <motion.div role="alert" initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }}
                 className={`flex items-center gap-2.5 p-3.5 rounded-xl text-sm font-medium ${dark ? 'bg-green-500/10 text-green-400 border border-green-500/20' : 'bg-green-50 text-green-700 border border-green-200'}`}>
                 <span className="w-2 h-2 bg-green-500 rounded-full animate-pulse" />
                 Message sent! I'll get back to you within 24h. 🎯
+              </motion.div>
+            )}
+            {submitError && (
+              <motion.div role="alert" initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }}
+                className={`flex items-center gap-2.5 p-3.5 rounded-xl text-sm font-medium ${dark ? 'bg-red-500/10 text-red-400 border border-red-500/20' : 'bg-red-50 text-red-700 border border-red-200'}`}>
+                <span className="w-2 h-2 bg-red-500 rounded-full" />
+                {submitError}
               </motion.div>
             )}
           </motion.form>

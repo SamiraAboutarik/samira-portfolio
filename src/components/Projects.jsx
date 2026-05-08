@@ -1,13 +1,12 @@
-import React, { useState } from 'react'
+import React, { Suspense, lazy, useState } from 'react'
+import { Link } from 'react-router-dom'
 import { motion, AnimatePresence } from 'framer-motion'
 import { useInView } from 'react-intersection-observer'
 import { HiArrowTopRightOnSquare, HiCodeBracket, HiArrowRight } from 'react-icons/hi2'
-import { SiReact, SiLaravel, SiPhp, SiPython, SiMysql, SiBootstrap, SiTailwindcss, SiRedux, SiJavascript } from 'react-icons/si'
-import ProjectModal from './ProjectModal'
 import { PROJECTS } from '../data/index'
+import { TECH_COLORS, TECH_ICONS } from '../data/techConfig'
 
-const TECH_ICONS  = { React: SiReact, Laravel: SiLaravel, PHP: SiPhp, Python: SiPython, MySQL: SiMysql, Bootstrap: SiBootstrap, Tailwind: SiTailwindcss, Redux: SiRedux, JavaScript: SiJavascript }
-const TECH_COLORS = { React: '#61DAFB', Laravel: '#FF2D20', PHP: '#777BB4', Python: '#3776AB', MySQL: '#4479A1', Bootstrap: '#7952B3', Tailwind: '#38BDF8', Redux: '#764ABC', JavaScript: '#F7DF1E' }
+const ProjectModal = lazy(() => import('./ProjectModal'))
 
 
 
@@ -35,18 +34,20 @@ function ProjectCard({ project, dark, onOpen, index }) {
         <div className={`absolute inset-0 bg-gradient-to-br ${color} opacity-90`} />
 
         {/* Project screenshot */}
-        {!imgError ? (
+        {image && !imgError ? (
           <img
             src={image}
             alt={title}
+            loading="lazy"
+            decoding="async"
             onError={() => setImgError(true)}
             className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
           />
         ) : (
           /* Fallback if image missing */
-          <div className="absolute inset-0 flex flex-col items-center justify-center gap-3">
+          <div className={`absolute inset-0 flex flex-col items-center justify-center gap-3 bg-gradient-to-br ${color}`}>
             <HiCodeBracket size={40} className="text-white/60" />
-            <span className="text-white/60 text-xs font-medium">Screenshot coming soon</span>
+            <span className="text-white/80 text-sm font-semibold">{title}</span>
           </div>
         )}
 
@@ -64,22 +65,26 @@ function ProjectCard({ project, dark, onOpen, index }) {
 
         {/* Quick action buttons — appear on hover */}
         <div className="absolute top-3 right-3 z-10 flex gap-2 opacity-0 group-hover:opacity-100 transition-all duration-300 translate-y-2 group-hover:translate-y-0">
-          <motion.a
-            href={github} target="_blank" rel="noreferrer"
-            whileHover={{ scale: 1.1 }} whileTap={{ scale: 0.93 }}
-            className="w-9 h-9 rounded-xl bg-black/40 backdrop-blur-sm border border-white/20 flex items-center justify-center text-white hover:bg-black/60 transition-colors"
-            onClick={e => e.stopPropagation()}
-          >
-            <HiCodeBracket size={15} />
-          </motion.a>
-          <motion.a
-            href={live} target="_blank" rel="noreferrer"
-            whileHover={{ scale: 1.1 }} whileTap={{ scale: 0.93 }}
-            className="w-9 h-9 rounded-xl bg-black/40 backdrop-blur-sm border border-white/20 flex items-center justify-center text-white hover:bg-black/60 transition-colors"
-            onClick={e => e.stopPropagation()}
-          >
-            <HiArrowTopRightOnSquare size={15} />
-          </motion.a>
+          {github && (
+            <motion.a
+              href={github} target="_blank" rel="noreferrer"
+              whileHover={{ scale: 1.1 }} whileTap={{ scale: 0.93 }}
+              className="w-9 h-9 rounded-xl bg-black/40 backdrop-blur-sm border border-white/20 flex items-center justify-center text-white hover:bg-black/60 transition-colors"
+              onClick={e => e.stopPropagation()}
+            >
+              <HiCodeBracket size={15} />
+            </motion.a>
+          )}
+          {live && (
+            <motion.a
+              href={live} target="_blank" rel="noreferrer"
+              whileHover={{ scale: 1.1 }} whileTap={{ scale: 0.93 }}
+              className="w-9 h-9 rounded-xl bg-black/40 backdrop-blur-sm border border-white/20 flex items-center justify-center text-white hover:bg-black/60 transition-colors"
+              onClick={e => e.stopPropagation()}
+            >
+              <HiArrowTopRightOnSquare size={15} />
+            </motion.a>
+          )}
         </div>
 
         {/* Bottom gradient fade into card */}
@@ -112,18 +117,31 @@ function ProjectCard({ project, dark, onOpen, index }) {
           })}
         </div>
 
-        {/* CTA */}
-        <motion.button
-          whileHover={{ x: 4 }}
-          whileTap={{ scale: 0.97 }}
-          onClick={() => onOpen(project)}
-          className="flex items-center gap-2 text-sm font-semibold transition-colors group/btn"
-          style={{ color: accentColor }}
-          data-cursor
-        >
-          View case study
-          <HiArrowRight size={15} className="transition-transform group-hover/btn:translate-x-1" />
-        </motion.button>
+        {/* CTAs */}
+        <div className="flex flex-wrap items-center gap-4">
+          <motion.button
+            whileHover={{ x: 4 }}
+            whileTap={{ scale: 0.97 }}
+            onClick={() => onOpen(project)}
+            className="flex items-center gap-2 text-sm font-semibold transition-colors group/btn"
+            style={{ color: accentColor }}
+            data-cursor
+          >
+            Quick view
+            <HiArrowRight size={15} className="transition-transform group-hover/btn:translate-x-1" />
+          </motion.button>
+          <motion.div whileHover={{ x: 4 }} whileTap={{ scale: 0.97 }}>
+            <Link
+              to={`/projects/${project.slug}`}
+              className="flex items-center gap-2 text-sm font-semibold transition-colors group/btn"
+              style={{ color: accentColor }}
+              data-cursor
+            >
+              View Case Study
+              <HiArrowRight size={15} className="transition-transform group-hover/btn:translate-x-1" />
+            </Link>
+          </motion.div>
+        </div>
       </div>
 
       {/* Bottom accent line */}
@@ -204,7 +222,9 @@ export default function Projects({ dark }) {
       </motion.div>
 
       {modalProject && (
-        <ProjectModal project={modalProject} dark={dark} onClose={() => setModalProject(null)} />
+        <Suspense fallback={null}>
+          <ProjectModal project={modalProject} dark={dark} onClose={() => setModalProject(null)} />
+        </Suspense>
       )}
     </section>
   )

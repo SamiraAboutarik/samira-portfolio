@@ -1,100 +1,85 @@
-import React, { useState, useRef, useEffect } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { HiXMark, HiPaperAirplane } from 'react-icons/hi2'
 import { RiRobot2Line } from 'react-icons/ri'
+import { CONTACT_INFO, PROJECTS, SKILLS } from '../data/index'
 
-// Smart response engine — covers any question about the portfolio
+const PROJECT_COUNT = PROJECTS.length
+const CONTACT_EMAIL = CONTACT_INFO.find(item => item.label === 'Email')?.value || 'samira.aboutarik@gmail.com'
+const GITHUB_URL = CONTACT_INFO.find(item => item.label === 'GitHub')?.value || 'github.com/SamiraAboutarik'
+const LINKEDIN_URL = CONTACT_INFO.find(item => item.label === 'LinkedIn')?.value || 'linkedin.com/in/samira-aboutarik'
+const SKILL_SUMMARY = Object.entries(SKILLS)
+  .map(([group, skills]) => `${group}: ${skills.map(skill => `${skill.name} (${skill.level}%)`).join(', ')}`)
+  .join('\n\n')
+
 function getResponse(input) {
   const q = input.toLowerCase().trim()
 
-  // ── SKILLS ────────────────────────────────────────────────────────────
   if (/(skill|tech|stack|know|use|language|framework|tool|mastered|proficient|expertise)/i.test(q))
-    return "Samira's tech stack spans the full web:\n\n🖥️ **Frontend:** React (75%), Tailwind CSS (82%), Bootstrap (85%), JavaScript (78%), HTML5 (88%), CSS3 (86%)\n\n⚙️ **Backend:** Laravel (78%), PHP (75%), MySQL (72%), MongoDB (60%)\n\n🛠️ **Tools:** Git (82%), REST APIs (78%), Python (55%), Agile/Scrum"
+    return `Samira's tech stack spans the full web:\n\n${SKILL_SUMMARY}`
 
-  // ── REACT ──────────────────────────────────────────────────────────────
   if (/\breact\b/i.test(q))
-    return "Yes! React is one of Samira's main frontend technologies. She uses it with Redux Toolkit (createAsyncThunk), React Scroll, Framer Motion and Tailwind CSS. She's built multiple SPAs including this portfolio and the Product Manager App."
+    return "Yes. React is one of Samira's main frontend technologies. She uses it with React Scroll, Framer Motion and Tailwind CSS."
 
-  // ── LARAVEL ────────────────────────────────────────────────────────────
   if (/laravel|php|eloquent|artisan|blade/i.test(q))
-    return "Laravel is Samira's primary backend framework. She's proficient in Eloquent ORM, migrations, seeders, factories, resource controllers, FormRequest validation, Route::resource and building RESTful APIs. She's used it in Khdima Link, AdvancedEvent and School Manager."
+    return "Laravel is Samira's primary backend framework. She uses it for REST APIs, Eloquent models, resource controllers and full-stack applications."
 
-  // ── PROJECTS ───────────────────────────────────────────────────────────
   if (/(project|built|made|work|portfolio|app|website|demo)/i.test(q))
-    return "Samira has built 4 real-world projects:\n\n🔴 **Khdima Link** — Freelance marketplace for local tradesmen (Laravel + React + MySQL)\n\n🟢 **AdvancedEvent** — Event management system with JWT auth (Laravel + React + Redux)\n\n🟠 **School Manager** — Complete academic management app (Laravel + PHP + MySQL)\n\n🔵 **Product Manager** — SPA with Redux Toolkit and image upload (React + JavaScript)\n\nScroll to the Projects section to see them all!"
+    return `Samira has built ${PROJECT_COUNT} real-world projects:\n\n${PROJECTS.map(project => `**${project.title}** - ${project.description}`).join('\n\n')}\n\nScroll to the Projects section to see them all.`
 
-  // ── KHDIMA LINK ────────────────────────────────────────────────────────
   if (/khdima/i.test(q))
-    return "Khdima Link is Samira's most ambitious project — a freelance marketplace connecting local tradesmen and artisans in the Souss-Massa region with clients. It features user profiles, a booking system, messaging and reviews. Built with Laravel, React, MySQL and Bootstrap. She also created the full pitch deck and investor presentation for it."
+    return "Khdima Link is a freelance marketplace connecting local tradesmen and artisans in the Souss-Massa region with clients. It uses Laravel, React, MySQL and Bootstrap."
 
-  // ── ADVANCED EVENT ─────────────────────────────────────────────────────
   if (/event|advanced/i.test(q))
-    return "AdvancedEvent is a complete event management system. It includes workshop management, expert profiles, participant registration and real-time stats. The backend is a Laravel REST API with JWT authentication, the frontend is React with Redux Toolkit. It's on her GitHub: github.com/SamiraAboutarik/AdvancedEvent"
+    return "AdvancedEvent is an event management system with workshops, experts, participants and online registrations. It uses Laravel, React, MySQL and Tailwind."
 
-  // ── EDUCATION / EXPERIENCE ─────────────────────────────────────────────
   if (/(education|study|school|degree|ofppt|background|experience|formation|training|learn)/i.test(q))
-    return "📚 **Education:**\n\n🎓 **2024 – Present:** Specialized Technician in Digital Development at OFPPT Ait Melloul — expected graduation June 2026\n\n📗 **2022 – 2023:** Bachelor's Degree in Physical Sciences\n\nShe's been building real-world projects throughout her training in Laravel, React, MySQL, MongoDB, Git and Agile/Scrum."
+    return "Education:\n\n2024 - Present: Specialized Technician in Digital Development at OFPPT Ait Melloul, expected graduation June 2026.\n\n2022 - 2023: Bachelor's Degree in Physical Sciences."
 
-  // ── CONTACT ────────────────────────────────────────────────────────────
   if (/(contact|email|reach|hire|message|connect|linkedin|github|social)/i.test(q))
-    return "Here's how to reach Samira:\n\n📧 **Email:** samira.aboutarik@gmail.com\n💼 **LinkedIn:** linkedin.com/in/samira-aboutarik\n🐙 **GitHub:** github.com/SamiraAboutarik\n📍 **Location:** Agadir, Morocco\n\nOr just scroll down to the Contact section and send her a message directly! She replies within 24 hours."
+    return `Here's how to reach Samira:\n\n**Email:** ${CONTACT_EMAIL}\n**LinkedIn:** ${LINKEDIN_URL}\n**GitHub:** ${GITHUB_URL}\n**Location:** Agadir, Morocco\n\nOr scroll down to the Contact section and send her a message directly.`
 
-  // ── AVAILABILITY ───────────────────────────────────────────────────────
   if (/(available|availab|open|hire|job|intern|work|recruit|opportun|position|role|full.time|freelance|stage)/i.test(q))
-    return "✅ Samira is currently available for:\n\n• **Internship** (stage PFE)\n• **Full-time position** (CDI)\n• **Freelance projects**\n\nShe's based in Agadir, Morocco and available immediately. Reach her at samira.aboutarik@gmail.com"
+    return `Samira is currently available for:\n\n**Internship** (stage PFE)\n**Full-time position** (CDI)\n**Freelance projects**\n\nShe's based in Agadir, Morocco. Reach her at ${CONTACT_EMAIL}.`
 
-  // ── LOCATION ───────────────────────────────────────────────────────────
   if (/(where|location|city|country|morocco|agadir|remote|based)/i.test(q))
-    return "Samira is based in **Agadir, Morocco** 🇲🇦 She's open to remote work and on-site opportunities in Morocco. She speaks Arabic (native), French (fluent) and English (proficient)."
+    return "Samira is based in **Agadir, Morocco**. She's open to remote work and on-site opportunities in Morocco."
 
-  // ── LANGUAGES (spoken) ─────────────────────────────────────────────────
   if (/(speak|spoken|arabic|french|english|language)/i.test(q))
-    return "Samira speaks **3 languages:**\n\n🇲🇦 Arabic — Native\n🇫🇷 French — Fluent\n🇬🇧 English — Proficient\n\nShe can work in any of these languages."
+    return "Samira speaks **3 languages:**\n\nArabic - Native\nFrench - Fluent\nEnglish - Proficient"
 
-  // ── WHO IS ──────────────────────────────────────────────────────────────
   if (/(who|about|introduce|yourself|samira|tell me)/i.test(q))
-    return "👩‍💻 **Samira Aboutarik** is a Full Stack Web Developer from Agadir, Morocco.\n\nShe's currently in her 2nd year at OFPPT studying Digital Development, with expertise in **Laravel** (backend) and **React** (frontend).\n\nShe's built 4+ real-world applications, passionate about clean code, modern UI and solving real problems. Available for internship, full-time or freelance work!"
+    return `**Samira Aboutarik** is a Full Stack Web Developer from Agadir, Morocco.\n\nShe's currently in her 2nd year at OFPPT studying Digital Development, with expertise in **Laravel** and **React**.\n\nShe's built ${PROJECT_COUNT}+ real-world applications and is available for internship, full-time or freelance work.`
 
-  // ── GREETINGS ───────────────────────────────────────────────────────────
-  if (/(hello|hi|hey|salut|bonjour|salam|مرحبا)/i.test(q))
-    return "Hi there! 👋 I'm Samira's portfolio assistant. I can answer anything about her:\n\n• Skills & tech stack\n• Projects she's built\n• Education & experience\n• How to contact or hire her\n\nWhat would you like to know?"
+  if (/(hello|hi|hey|salut|bonjour|salam)/i.test(q))
+    return "Hi there! I'm Samira's portfolio assistant. I can answer questions about her skills, projects, education, contact details and availability."
 
-  // ── FRENCH ──────────────────────────────────────────────────────────────
-  if (/(compétence|projet|expérience|formation|disponible|contacter|qui est)/i.test(q))
-    return "Samira est une développeuse Full Stack basée à Agadir, Maroc 🇲🇦. Elle maîtrise React, Laravel, PHP, MySQL et bien plus. Elle est disponible pour un stage, CDI ou freelance. Posez-moi n'importe quelle question sur son profil !"
-
-  // ── ARABIC ──────────────────────────────────────────────────────────────
   if (/[\u0600-\u06FF]/.test(q))
-    return "مرحباً! 👋 أنا مساعد سميرة الرقمي. سميرة مطورة ويب متكاملة من أكادير، المغرب. تتقن React وLaravel وPHP وMySQL. متاحة للتدريب أو العمل الدائم. اسألني أي سؤال عنها!"
+    return "Marhaba! Samira is a Full Stack Web Developer from Agadir, Morocco. She works with React, Laravel, PHP and MySQL."
 
-  // ── CV / RESUME ─────────────────────────────────────────────────────────
   if (/(cv|resume|download)/i.test(q))
-    return "You can download Samira's CV directly from the navbar — click the **CV** button at the top right of the page! 📄"
+    return "You can download Samira's CV directly from the navbar by clicking the CV button."
 
-  // ── PORTFOLIO / THIS WEBSITE ────────────────────────────────────────────
   if (/(portfolio|website|built with|this site|this web|how is this)/i.test(q))
-    return "This portfolio was built by Samira herself using:\n\n⚛️ React 18 + Vite\n🎨 Tailwind CSS\n✨ Framer Motion (animations)\n🖱️ Custom magnetic cursor\n🌐 Particle canvas background\n🥚 Easter egg (try the Konami code!)\n\nEvery component is handcrafted — no templates!"
+    return "This portfolio was built with React 18, Vite, Tailwind CSS, Framer Motion, a custom cursor, and a particle canvas background."
 
-  // ── EASTER EGG ──────────────────────────────────────────────────────────
   if (/(easter|egg|secret|konami|hidden|cheat)/i.test(q))
-    return "🥚 There's a secret easter egg hidden in this portfolio! Type the **Konami Code** on your keyboard:\n\n↑ ↑ ↓ ↓ ← → ← → B A\n\nSee what happens... 😉"
+    return "There is a secret easter egg hidden in this portfolio. Try the Konami Code on your keyboard."
 
-  // ── SALARY / RATE ───────────────────────────────────────────────────────
   if (/(salary|rate|pay|cost|price|charge|how much)/i.test(q))
-    return "For salary or rate expectations, please contact Samira directly — it depends on the role, scope and location. Reach her at **samira.aboutarik@gmail.com** or via LinkedIn. She'll get back to you within 24h! 📬"
+    return `For salary or rate expectations, please contact Samira directly. Reach her at **${CONTACT_EMAIL}** or via LinkedIn.`
 
-  // ── DEFAULT ─────────────────────────────────────────────────────────────
-  return "Great question! I can help you with anything about Samira. Try asking about:\n\n💻 Her **skills** & tech stack\n🚀 Her **projects**\n🎓 Her **education** & experience\n📧 How to **contact** or **hire** her\n📄 **Download** her CV\n\nWhat would you like to know?"
+  return "Great question. I can help with Samira's skills, projects, education, contact details, availability, and CV."
 }
 
 export default function Chatbot({ dark }) {
-  const [open, setOpen]         = useState(false)
+  const [open, setOpen] = useState(false)
   const [messages, setMessages] = useState([
-    { role: 'assistant', text: "Hi! 👋 I'm Samira's portfolio assistant. Ask me anything about her skills, projects, experience, or how to hire her!" }
+    { role: 'assistant', text: "Hi! I'm Samira's portfolio assistant. Ask me anything about her skills, projects, experience, or how to hire her!" },
   ])
-  const [input, setInput]   = useState('')
+  const [input, setInput] = useState('')
   const [typing, setTyping] = useState(false)
-  const bottomRef           = useRef(null)
+  const bottomRef = useRef(null)
 
   useEffect(() => {
     bottomRef.current?.scrollIntoView({ behavior: 'smooth' })
@@ -106,7 +91,6 @@ export default function Chatbot({ dark }) {
     setInput('')
     setMessages(prev => [...prev, { role: 'user', text: msg }])
     setTyping(true)
-    // Simulate thinking delay
     const delay = 600 + Math.random() * 600
     setTimeout(() => {
       setTyping(false)
@@ -116,12 +100,11 @@ export default function Chatbot({ dark }) {
 
   const QUICK_REPLIES = [
     "What's her tech stack?",
-    "Show her projects",
-    "Is she available?",
-    "How to contact her?",
+    'Show her projects',
+    'Is she available?',
+    'How to contact her?',
   ]
 
-  // Format text with **bold** markdown
   const formatText = (text) => {
     return text.split('\n').map((line, i) => {
       const parts = line.split(/\*\*(.+?)\*\*/g)
@@ -148,7 +131,6 @@ export default function Chatbot({ dark }) {
             }`}
             style={{ height: 460 }}
           >
-            {/* Header */}
             <div className="grad-btn p-4 flex items-center gap-3 shrink-0">
               <div className="w-9 h-9 rounded-full bg-white/20 border border-white/30 flex items-center justify-center font-display font-bold text-sm text-white">S</div>
               <div className="flex-1">
@@ -158,12 +140,11 @@ export default function Chatbot({ dark }) {
                   Ask me anything
                 </p>
               </div>
-              <motion.button whileHover={{ scale: 1.1 }} whileTap={{ scale: 0.9 }} onClick={() => setOpen(false)} className="text-white/60 hover:text-white transition-colors">
+              <motion.button aria-label="Fermer le chatbot" whileHover={{ scale: 1.1 }} whileTap={{ scale: 0.9 }} onClick={() => setOpen(false)} className="text-white/60 hover:text-white transition-colors">
                 <HiXMark size={18} />
               </motion.button>
             </div>
 
-            {/* Messages */}
             <div className="flex-1 overflow-y-auto p-4 space-y-3">
               {messages.map((msg, i) => (
                 <motion.div key={i} initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.3 }}
@@ -178,7 +159,6 @@ export default function Chatbot({ dark }) {
                 </motion.div>
               ))}
 
-              {/* Typing indicator */}
               {typing && (
                 <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="flex justify-start">
                   <div className={`px-4 py-3 rounded-2xl rounded-bl-sm flex gap-1 items-center ${dark ? 'bg-white/8' : 'bg-gray-100'}`}>
@@ -191,7 +171,6 @@ export default function Chatbot({ dark }) {
               <div ref={bottomRef} />
             </div>
 
-            {/* Quick replies — only on first message */}
             {messages.length <= 1 && (
               <div className={`px-3 pb-2 flex gap-1.5 flex-wrap shrink-0 border-t pt-2 ${dark ? 'border-white/5' : 'border-gray-100'}`}>
                 {QUICK_REPLIES.map(q => (
@@ -205,7 +184,6 @@ export default function Chatbot({ dark }) {
               </div>
             )}
 
-            {/* Input */}
             <div className={`p-3 border-t shrink-0 ${dark ? 'border-white/8' : 'border-gray-100'}`}>
               <div className="flex gap-2">
                 <input
@@ -220,6 +198,7 @@ export default function Chatbot({ dark }) {
                   }`}
                 />
                 <motion.button
+                  aria-label="Envoyer le message"
                   whileHover={{ scale: typing ? 1 : 1.08 }}
                   whileTap={{ scale: typing ? 1 : 0.93 }}
                   onClick={() => send()}
@@ -234,13 +213,12 @@ export default function Chatbot({ dark }) {
         )}
       </AnimatePresence>
 
-      {/* Toggle button */}
-      <motion.button whileHover={{ scale: 1.1 }} whileTap={{ scale: 0.92 }} onClick={() => setOpen(o => !o)}
+      <motion.button aria-label={open ? 'Fermer le chatbot' : 'Ouvrir le chatbot'} whileHover={{ scale: 1.1 }} whileTap={{ scale: 0.92 }} onClick={() => setOpen(o => !o)}
         className="w-14 h-14 rounded-full grad-btn flex items-center justify-center shadow-xl shadow-purple-500/30 relative">
         <AnimatePresence mode="wait">
           {open
-            ? <motion.span key="x"    initial={{ rotate: -90, opacity: 0 }} animate={{ rotate: 0, opacity: 1 }} exit={{ rotate: 90, opacity: 0 }} transition={{ duration: 0.2 }}><HiXMark size={22} className="text-white" /></motion.span>
-            : <motion.span key="chat" initial={{ rotate: 90, opacity: 0 }}  animate={{ rotate: 0, opacity: 1 }} exit={{ rotate: -90, opacity: 0 }} transition={{ duration: 0.2 }}><RiRobot2Line size={22} className="text-white" /></motion.span>
+            ? <motion.span key="x" initial={{ rotate: -90, opacity: 0 }} animate={{ rotate: 0, opacity: 1 }} exit={{ rotate: 90, opacity: 0 }} transition={{ duration: 0.2 }}><HiXMark size={22} className="text-white" /></motion.span>
+            : <motion.span key="chat" initial={{ rotate: 90, opacity: 0 }} animate={{ rotate: 0, opacity: 1 }} exit={{ rotate: -90, opacity: 0 }} transition={{ duration: 0.2 }}><RiRobot2Line size={22} className="text-white" /></motion.span>
           }
         </AnimatePresence>
         {!open && <span className="absolute -top-1 -right-1 w-4 h-4 bg-green-400 rounded-full border-2 border-[#070712] animate-pulse" />}

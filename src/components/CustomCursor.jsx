@@ -1,5 +1,9 @@
 import React, { useEffect, useRef, useState } from 'react'
 
+const prefersReduced = window.matchMedia(
+  '(prefers-reduced-motion: reduce)'
+).matches
+
 export default function CustomCursor() {
   const cursorRef = useRef(null)
   const dotRef = useRef(null)
@@ -8,6 +12,7 @@ export default function CustomCursor() {
   const [visible, setVisible] = useState(false)
 
   useEffect(() => {
+    if (prefersReduced) return
     let mouseX = -200, mouseY = -200
     let curX = -200, curY = -200
     let animId
@@ -36,22 +41,34 @@ export default function CustomCursor() {
     const onLeave = () => setHovered(false)
     const onDown  = () => setClicked(true)
     const onUp    = () => setClicked(false)
+    const attached = new Set()
+
+    const attachListeners = () => {
+      document.querySelectorAll('a, button, [data-cursor]').forEach(el => {
+        if (attached.has(el)) return
+        el.addEventListener('mouseenter', onEnter)
+        el.addEventListener('mouseleave', onLeave)
+        attached.add(el)
+      })
+    }
+
+    const removeAttachedListeners = () => {
+      attached.forEach(el => {
+        el.removeEventListener('mouseenter', onEnter)
+        el.removeEventListener('mouseleave', onLeave)
+      })
+      attached.clear()
+    }
 
     window.addEventListener('mousemove', move)
     window.addEventListener('mousedown', onDown)
     window.addEventListener('mouseup', onUp)
 
-    document.querySelectorAll('a, button, [data-cursor]').forEach(el => {
-      el.addEventListener('mouseenter', onEnter)
-      el.addEventListener('mouseleave', onLeave)
-    })
+    attachListeners()
 
     // Observe DOM for new interactive elements
     const observer = new MutationObserver(() => {
-      document.querySelectorAll('a, button, [data-cursor]').forEach(el => {
-        el.addEventListener('mouseenter', onEnter)
-        el.addEventListener('mouseleave', onLeave)
-      })
+      attachListeners()
     })
     observer.observe(document.body, { childList: true, subtree: true })
 
@@ -63,8 +80,11 @@ export default function CustomCursor() {
       window.removeEventListener('mouseup', onUp)
       cancelAnimationFrame(animId)
       observer.disconnect()
+      removeAttachedListeners()
     }
-  }, [])
+  }, [prefersReduced])
+
+  if (prefersReduced) return null
 
   return (
     <>

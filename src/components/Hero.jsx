@@ -19,6 +19,10 @@ import { Link } from 'react-scroll'
 import { HiArrowDown, HiArrowRight, HiEnvelope, HiCodeBracket } from 'react-icons/hi2'
 import MagneticButton from './MagneticButton'
 
+const prefersReduced = window.matchMedia(
+  '(prefers-reduced-motion: reduce)'
+).matches
+
 /* ─────────────────────────────────────────
    Theme factory — returns tokens for dark or light mode
 ───────────────────────────────────────── */
@@ -347,12 +351,16 @@ function CodeBlock({ T }) {
 
 function StatItem({ value, suffix, label, trigger, T }) {
   const count = useCountUp(value, { start: trigger })
+  const numberStyle = T.isDark
+    ? { color: '#f8fafc', WebkitTextFillColor: '#f8fafc' }
+    : { background: T.gradText, WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }
+
   return (
     <div style={{ display: 'flex', flexDirection: 'column' }}>
-      <span style={{ fontFamily: 'Syne, sans-serif', fontWeight: 800, fontSize: 28, lineHeight: 1, background: T.gradText, WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}>
+      <span style={{ fontFamily: 'Syne, sans-serif', fontWeight: 800, fontSize: 28, lineHeight: 1, ...numberStyle }}>
         {count}{suffix}
       </span>
-      <span style={{ fontFamily: 'Fira Code, monospace', fontSize: 11, color: T.statLabel, marginTop: 4, letterSpacing: '0.05em' }}>
+      <span style={{ fontFamily: 'Fira Code, monospace', fontSize: 11, color: T.isDark ? '#cbd5e1' : T.statLabel, marginTop: 4, letterSpacing: '0.05em' }}>
         {label}
       </span>
     </div>
@@ -382,6 +390,7 @@ export default function Hero({ dark = true }) {
   const heroRef                  = useRef(null)
 
   useEffect(() => {
+    if (prefersReduced) return
     const handle = (e) => {
       if (!heroRef.current) return
       const { left, top } = heroRef.current.getBoundingClientRect()
@@ -389,7 +398,7 @@ export default function Hero({ dark = true }) {
     }
     window.addEventListener('mousemove', handle)
     return () => window.removeEventListener('mousemove', handle)
-  }, [])
+  }, [prefersReduced])
 
   useEffect(() => {
     const t = setTimeout(() => setStats(true), 2200)
@@ -398,6 +407,7 @@ export default function Hero({ dark = true }) {
 
   /* Recompute theme when dark prop changes */
   const theme = makeTheme(dark)
+  theme.isDark = dark
 
   return (
     <section
@@ -414,10 +424,10 @@ export default function Hero({ dark = true }) {
       }}
     >
       <GridBackground T={theme} />
-      <FloatingShapes T={theme} />
+      {!prefersReduced && <FloatingShapes T={theme} />}
 
       {/* Mouse spotlight */}
-      <div style={{
+      {!prefersReduced && <div style={{
         position:   'absolute',
         width: 600, height: 600,
         borderRadius: '50%',
@@ -426,18 +436,20 @@ export default function Hero({ dark = true }) {
         top:  mousePos.y - 300,
         transition: 'left 0.15s ease-out, top 0.15s ease-out',
         pointerEvents: 'none',
-      }} />
+      }} />}
 
       {/* Ambient blobs */}
       <div style={{ position: 'absolute', top: '-10%',    left: '-5%',  width: 500, height: 500, borderRadius: '50%', background: theme.glow1, filter: 'blur(120px)', pointerEvents: 'none' }} />
       <div style={{ position: 'absolute', bottom: '-10%', right: '5%',  width: 400, height: 400, borderRadius: '50%', background: theme.glow2, filter: 'blur(100px)', pointerEvents: 'none' }} />
 
       {/* Scan line */}
-      <motion.div
-        style={{ position: 'absolute', left: 0, right: 0, height: 1, background: `linear-gradient(to right, transparent, ${theme.accentMid}44, transparent)`, pointerEvents: 'none' }}
-        animate={{ top: ['10%', '90%', '10%'] }}
-        transition={{ duration: 12, repeat: Infinity, ease: 'linear' }}
-      />
+      {!prefersReduced && (
+        <motion.div
+          style={{ position: 'absolute', left: 0, right: 0, height: 1, background: `linear-gradient(to right, transparent, ${theme.accentMid}44, transparent)`, pointerEvents: 'none' }}
+          animate={{ top: ['10%', '90%', '10%'] }}
+          transition={{ duration: 12, repeat: Infinity, ease: 'linear' }}
+        />
+      )}
 
       {/* ── Layout ─────────────────────────── */}
       <div style={{

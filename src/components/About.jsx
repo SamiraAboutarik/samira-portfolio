@@ -27,7 +27,7 @@ export default function About({ dark }) {
               <div className={`w-full h-full rounded-full flex items-center justify-center relative overflow-hidden ${
                 dark ? 'bg-gradient-to-br from-purple-950/60 to-cyan-950/60 border-2 border-purple-500/25' : 'bg-gradient-to-br from-purple-50 to-cyan-50 border-2 border-purple-200'
               }`}>
-                <img src="/monpic.png" alt="Samira Aboutarik" className="w-full h-full object-cover rounded-full" />
+                <img src="/monpic.png" alt="Samira Aboutarik" loading="lazy" decoding="async" width="256" height="256" className="w-full h-full object-cover rounded-full" />
               </div>
               <motion.div animate={{ rotate: 360 }} transition={{ duration: 7, repeat: Infinity, ease: 'linear' }} className="absolute inset-[-18px]">
                 <div className={`absolute top-0 left-1/2 -translate-x-1/2 -translate-y-1/2 w-3.5 h-3.5 rounded-full border-2 bg-purple-500 ${dark ? 'border-[#070712]' : 'border-gray-50'}`} />

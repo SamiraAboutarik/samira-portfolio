@@ -1,9 +1,9 @@
-import React, { useState } from 'react'
+import React, { Suspense, lazy } from 'react'
+import { Route, Routes } from 'react-router-dom'
 import { useDarkMode }       from './hooks/useDarkMode'
 import { useScrollProgress } from './hooks/useScrollProgress'
 
 import Preloader          from './components/Preloader'
-import CustomCursor       from './components/CustomCursor'
 import ParticleBackground from './components/ParticleBackground'
 import ScrollProgressBar  from './components/ScrollProgressBar'
 import Navbar             from './components/Navbar'
@@ -15,24 +15,30 @@ import Projects           from './components/Projects'
 import Stats              from './components/Stats'
 import Contact            from './components/Contact'
 import Footer             from './components/Footer'
-import Chatbot            from './components/Chatbot'
 import ScrollToTop        from './components/ScrollToTop'
 import EasterEgg          from './components/EasterEgg'
+import NotFound           from './components/NotFound'
+import CookieBanner       from './components/CookieBanner'
+
+const CustomCursor = lazy(() => import('./components/CustomCursor'))
+const Chatbot = lazy(() => import('./components/Chatbot'))
+const ProjectDetail = lazy(() => import('./pages/ProjectDetail'))
 
 export default function App() {
+  const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches
   const [dark, toggleDark] = useDarkMode()
   const scrollProgress      = useScrollProgress()
-  const [loaded, setLoaded] = useState(false)
-
   return (
     <>
-      <Preloader onDone={() => setLoaded(true)} />
-      <CustomCursor />
+      <Preloader onDone={() => {}} />
+      <Suspense fallback={null}>
+        <CustomCursor />
+      </Suspense>
       <EasterEgg dark={dark} />
 
       <div
         className={`${dark ? 'bg-[#070712] text-white' : 'bg-gray-50 text-gray-900'} min-h-screen font-body transition-colors duration-500 relative`}
-        style={{ cursor: 'none' }}
+        style={{ cursor: prefersReduced ? undefined : 'none' }}
       >
         <ParticleBackground dark={dark} />
 
@@ -43,18 +49,31 @@ export default function App() {
         <ScrollProgressBar progress={scrollProgress} />
         <Navbar dark={dark} toggleDark={toggleDark} />
 
-        <main className="relative z-10">
-          <Hero       dark={dark} />
-          <About      dark={dark} />
-          <div className="section-alt"><Skills dark={dark} /></div>
-          <Education dark={dark} />
-          <Projects   dark={dark} />
-          <div className="section-alt"><Stats dark={dark} /></div>
-          <Contact    dark={dark} />
-        </main>
+        <Routes>
+          <Route path="/" element={(
+            <main className="relative z-10">
+              <Hero       dark={dark} />
+              <About      dark={dark} />
+              <div className="section-alt"><Skills dark={dark} /></div>
+              <Education dark={dark} />
+              <Projects   dark={dark} />
+              <div className="section-alt"><Stats dark={dark} /></div>
+              <Contact    dark={dark} />
+            </main>
+          )} />
+          <Route path="/projects/:slug" element={(
+            <Suspense fallback={null}>
+              <ProjectDetail dark={dark} />
+            </Suspense>
+          )} />
+          <Route path="*" element={<NotFound dark={dark} />} />
+        </Routes>
 
         <Footer dark={dark} />
-        <Chatbot dark={dark} />
+        <CookieBanner dark={dark} />
+        <Suspense fallback={null}>
+          <Chatbot dark={dark} />
+        </Suspense>
         <ScrollToTop visible={scrollProgress > 10} />
       </div>
     </>

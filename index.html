@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="fr">
+<html lang="en">
   <head>
     <meta charset="UTF-8" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
@@ -7,26 +7,57 @@
     <meta name="description" content="Samira Aboutarik — Full Stack Web Developer. Spécialisée React, Laravel, PHP. Disponible pour stage et opportunités." />
     <meta name="keywords" content="Samira Aboutarik, Full Stack Developer, React, Laravel, PHP, Agadir, Maroc" />
     <meta name="author" content="Samira Aboutarik" />
+    <link rel="manifest" href="/manifest.json" />
+    <link rel="canonical" href="https://portfolio-samira.vercel.app" />
+    <meta property="og:title" content="Samira Aboutarik - Full Stack Developer" />
+    <meta property="og:description" content="Samira Aboutarik - Full Stack Web Developer specializing in React, Laravel, and PHP. Available for internships and opportunities." />
+    <meta property="og:image" content="https://portfolio-samira.vercel.app/monpicsansback.jpg" />
+    <meta property="og:url" content="https://portfolio-samira.vercel.app" />
+    <meta property="og:type" content="website" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Samira Aboutarik - Full Stack Developer" />
+    <meta name="twitter:description" content="Samira Aboutarik - Full Stack Web Developer specializing in React, Laravel, and PHP. Available for internships and opportunities." />
+    <meta name="twitter:image" content="https://portfolio-samira.vercel.app/monpicsansback.jpg" />
     <title>Samira Aboutarik — Full Stack Developer</title>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;1,9..40,400&display=swap" rel="stylesheet" />
-  <!-- Google tag (gtag.js) -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-QGPGX7T32Z"></script>
+    <script>
+      (function () {
+        var gaId = 'G-QGPGX7T32Z';
+        var consent = localStorage.getItem('cookie_consent');
 
-<script>
-  window.dataLayer = window.dataLayer || [];
+        if (consent === 'declined') {
+          window['ga-disable-' + gaId] = true;
+          return;
+        }
 
-  function gtag() {
-    dataLayer.push(arguments);
-  }
+        if (consent !== 'accepted') return;
 
-  gtag('js', new Date());
-  gtag('config', 'G-QGPGX7T32Z');
-</script>
+        window.dataLayer = window.dataLayer || [];
+        window.gtag = function gtag() {
+          window.dataLayer.push(arguments);
+        };
+
+        var script = document.createElement('script');
+        script.async = true;
+        script.src = 'https://www.googletagmanager.com/gtag/js?id=' + gaId;
+        document.head.appendChild(script);
+
+        window.gtag('js', new Date());
+        window.gtag('config', gaId);
+      })();
+    </script>
   </head>
   <body>
     <div id="root"></div>
     <script type="module" src="/src/main.jsx"></script>
+    <script>
+      if ('serviceWorker' in navigator) {
+        window.addEventListener('load', function () {
+          navigator.serviceWorker.register('/sw.js');
+        });
+      }
+    </script>
   </body>
 </html>

@@ -1,9 +1,11 @@
 import React, { useEffect, useRef } from 'react'
 
 export default function ParticleBackground({ dark }) {
+  const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches
   const canvasRef = useRef(null)
 
   useEffect(() => {
+    if (prefersReduced) return
     const canvas = canvasRef.current
     if (!canvas) return
     const ctx = canvas.getContext('2d')
@@ -73,7 +75,9 @@ export default function ParticleBackground({ dark }) {
       window.removeEventListener('resize', resize)
       window.removeEventListener('mousemove', onMouseMove)
     }
-  }, [dark])
+  }, [dark, prefersReduced])
+
+  if (prefersReduced) return null
 
   return (
     <canvas
