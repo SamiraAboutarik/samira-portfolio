@@ -11,12 +11,11 @@ const TECH_COLORS = { React: '#61DAFB', Laravel: '#FF2D20', PHP: '#777BB4', Pyth
 
 
 
-const FILTERS = ['All', 'React', 'Laravel', 'Python']
+const FILTERS = ['All', 'React', 'Laravel', 'Python', 'JavaScript'];
 
 function ProjectCard({ project, dark, onOpen, index }) {
   const { title, description, tech, color, accentColor, image, github, live, featured } = project
   const [imgError, setImgError] = useState(false)
-
   return (
     <motion.div
       layout
