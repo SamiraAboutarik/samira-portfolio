@@ -5,9 +5,10 @@ import { RiRobot2Line } from 'react-icons/ri'
 import { CONTACT_INFO, PROJECTS, SKILLS } from '../data/index'
 
 const PROJECT_COUNT = PROJECTS.length
-const CONTACT_EMAIL = CONTACT_INFO.find(item => item.label === 'Email')?.value || 'samira.aboutarik@gmail.com'
+const CONTACT_EMAIL = CONTACT_INFO.find(item => item.label === 'Email')?.value || 'samiraaboutarik45@gmail.com'
 const GITHUB_URL = CONTACT_INFO.find(item => item.label === 'GitHub')?.value || 'github.com/SamiraAboutarik'
 const LINKEDIN_URL = CONTACT_INFO.find(item => item.label === 'LinkedIn')?.value || 'linkedin.com/in/samira-aboutarik'
+const WHATSAPP_URL = CONTACT_INFO.find(item => item.label === 'WhatsApp')?.href || 'https://wa.me/212641322297'
 const SKILL_SUMMARY = Object.entries(SKILLS)
   .map(([group, skills]) => `${group}: ${skills.map(skill => `${skill.name} (${skill.level}%)`).join(', ')}`)
   .join('\n\n')
@@ -37,7 +38,7 @@ function getResponse(input) {
     return "Education:\n\n2024 - Present: Specialized Technician in Digital Development at OFPPT Ait Melloul, expected graduation June 2026.\n\n2022 - 2023: Bachelor's Degree in Physical Sciences."
 
   if (/(contact|email|reach|hire|message|connect|linkedin|github|social)/i.test(q))
-    return `Here's how to reach Samira:\n\n**Email:** ${CONTACT_EMAIL}\n**LinkedIn:** ${LINKEDIN_URL}\n**GitHub:** ${GITHUB_URL}\n**Location:** Agadir, Morocco\n\nOr scroll down to the Contact section and send her a message directly.`
+    return `Here's how to reach Samira:\n\n**Email:** ${CONTACT_EMAIL}\n**WhatsApp:** ${WHATSAPP_URL}\n**LinkedIn:** ${LINKEDIN_URL}\n**GitHub:** ${GITHUB_URL}\n**Location:** Agadir, Morocco\n\nOr scroll down to the Contact section and send her a message directly.`
 
   if (/(available|availab|open|hire|job|intern|work|recruit|opportun|position|role|full.time|freelance|stage)/i.test(q))
     return `Samira is currently available for:\n\n**Internship** (stage PFE)\n**Full-time position** (CDI)\n**Freelance projects**\n\nShe's based in Agadir, Morocco. Reach her at ${CONTACT_EMAIL}.`

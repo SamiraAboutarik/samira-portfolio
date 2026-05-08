@@ -7,15 +7,16 @@ import { HiHeart } from 'react-icons/hi2'
 const NAV_LINKS = [
   { id: 'about',      label: 'About' },
   { id: 'skills',     label: 'Skills' },
+  { id: 'services',   label: 'Services' },
   { id: 'experience', label: 'Experience' },
   { id: 'projects',   label: 'Projects' },
   { id: 'contact',    label: 'Contact' },
 ]
 
 const SOCIAL = [
-  { href: 'https://github.com/SamiraAboutarik', Icon: FiGithub,  label: 'GitHub' },
-  { href: null,                                 Icon: FiLinkedin, label: 'LinkedIn' },
-  { href: 'mailto:samira.aboutarik@gmail.com',  Icon: FiMail,     label: 'Email' },
+  { href: 'https://github.com/SamiraAboutarik', Icon: FiGithub, label: 'GitHub' },
+  { href: 'https://www.linkedin.com/in/samira-aboutarik/', Icon: FiLinkedin, label: 'LinkedIn' },
+  { href: 'mailto:samiraaboutarik45@gmail.com', Icon: FiMail, label: 'Email' },
 ]
 
 export default function Footer({ dark }) {
@@ -37,8 +38,8 @@ export default function Footer({ dark }) {
           </div>
 
           <div className="flex gap-2">
-            {SOCIAL.filter(({ href }) => href).map(({ href, Icon, label }) => (
-              <motion.a key={label} href={href} target={href.startsWith('http') ? '_blank' : undefined} rel="noreferrer"
+            {SOCIAL.map(({ href, Icon, label }) => (
+              <motion.a key={label} href={href} target={href.startsWith('http') ? '_blank' : undefined} rel={href.startsWith('http') ? 'noopener noreferrer' : undefined}
                 whileHover={{ scale: 1.12, y: -2 }} whileTap={{ scale: 0.93 }}
                 className={`w-9 h-9 rounded-xl flex items-center justify-center transition-colors ${dark ? 'bg-white/5 hover:bg-white/12 text-gray-500 hover:text-white' : 'bg-gray-100 hover:bg-gray-900 text-gray-500 hover:text-white'}`}
                 title={label}>

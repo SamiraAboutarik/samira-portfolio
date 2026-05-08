@@ -84,12 +84,12 @@ export default function About({ dark }) {
 
           <div className="flex gap-3 pt-1">
             <motion.a whileHover={{ scale: 1.05, y: -2 }} whileTap={{ scale: 0.97 }}
-              href="https://github.com/SamiraAboutarik" target="_blank" rel="noreferrer"
+              href="https://github.com/SamiraAboutarik" target="_blank" rel="noopener noreferrer"
               className={`flex items-center gap-2.5 text-sm font-semibold px-5 py-3 rounded-xl transition-colors ${dark ? 'bg-white/8 hover:bg-white/14 text-gray-200' : 'bg-gray-900 hover:bg-gray-800 text-white'}`}>
               <FiGithub size={16} /> GitHub
             </motion.a>
             <motion.a whileHover={{ scale: 1.05, y: -2 }} whileTap={{ scale: 0.97 }}
-              href="#" className="flex items-center gap-2.5 text-sm font-semibold px-5 py-3 rounded-xl bg-[#0077B5] hover:bg-[#0069a3] text-white transition-colors">
+              href="https://www.linkedin.com/in/samira-aboutarik/" target="_blank" rel="noopener noreferrer" className="flex items-center gap-2.5 text-sm font-semibold px-5 py-3 rounded-xl bg-[#0077B5] hover:bg-[#0069a3] text-white transition-colors">
               <FiLinkedin size={16} /> LinkedIn
             </motion.a>
           </div>

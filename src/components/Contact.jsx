@@ -2,15 +2,14 @@ import React, { useRef, useState } from 'react'
 import { motion } from 'framer-motion'
 import { useInView } from 'react-intersection-observer'
 import emailjs from '@emailjs/browser'
-import { HiPaperAirplane, HiEnvelope, HiMapPin, HiBriefcase } from 'react-icons/hi2'
-import { FiGithub, FiLinkedin ,FiPhone} from 'react-icons/fi'
+import { HiPaperAirplane, HiEnvelope, HiBriefcase } from 'react-icons/hi2'
+import { FiGithub, FiLinkedin, FiPhone } from 'react-icons/fi'
 
 const CONTACT_INFO = [
-  { Icon: HiEnvelope, label: 'Email',    value: 'samira.aboutarik@gmail.com',        href: 'mailto:samira.aboutarik@gmail.com',  color: 'bg-purple-500/10 text-purple-400' },
-  { Icon: FiLinkedin, label: 'LinkedIn', value: 'linkedin.com/in/samira-aboutarik', href: null,                                 color: 'bg-blue-500/10 text-blue-400' },
-  { Icon: FiPhone,    label: 'Téléphone',   value: '+212 6 41 32 22 97',             href: 'tel:+212641322297',                  color: 'bg-green-500/10 text-green-400' },
-  { Icon: FiGithub,   label: 'GitHub',   value: 'github.com/SamiraAboutarik',       href: 'https://github.com/SamiraAboutarik', color: 'bg-gray-500/10 text-gray-400' },
-  { Icon: HiMapPin,   label: 'Location', value: 'Agadir, Morocco 🇲🇦',              href: null,                                 color: 'bg-red-500/10 text-red-400' },
+  { Icon: HiEnvelope, label: 'Email', value: 'samiraaboutarik45@gmail.com', href: 'mailto:samiraaboutarik45@gmail.com', color: 'bg-purple-500/10 text-purple-400' },
+  { Icon: FiPhone, label: 'WhatsApp', value: '+212641322297', href: 'https://wa.me/212641322297', color: 'bg-green-500/10 text-green-400' },
+  { Icon: FiLinkedin, label: 'LinkedIn', value: 'linkedin.com/in/samira-aboutarik', href: 'https://www.linkedin.com/in/samira-aboutarik/', color: 'bg-blue-500/10 text-blue-400' },
+  { Icon: FiGithub, label: 'GitHub', value: 'github.com/SamiraAboutarik', href: 'https://github.com/SamiraAboutarik', color: 'bg-gray-500/10 text-gray-400' },
 ]
 
 export default function Contact({ dark }) {
@@ -39,6 +38,12 @@ export default function Contact({ dark }) {
     setErrors({})
     setSubmitted(false)
     setSubmitError('')
+
+    if (!import.meta.env.VITE_EMAILJS_SERVICE_ID) {
+      setSubmitError('Formulaire non configuré. Écrivez-moi directement : samiraaboutarik45@gmail.com')
+      return
+    }
+
     setSending(true)
 
     try {
@@ -52,7 +57,7 @@ export default function Contact({ dark }) {
       setTimeout(() => setSubmitted(false), 5000)
       setForm({ name: '', email: '', subject: '', message: '' })
     } catch (error) {
-      setSubmitError('Message could not be sent. Please try again later.')
+      setSubmitError("Erreur d'envoi. Réessayez ou contactez-moi par email.")
     } finally {
       setSending(false)
     }
@@ -84,7 +89,11 @@ export default function Contact({ dark }) {
             {CONTACT_INFO.map(({ Icon, label, value, href, color }) => {
               const ContactTag = href ? motion.a : motion.div
               return (
-              <ContactTag key={label} {...(href ? { href } : {})} whileHover={{ x: 6 }}
+              <ContactTag
+                key={label}
+                href={href}
+                {...(href.startsWith('http') ? { target: '_blank', rel: 'noopener noreferrer' } : {})}
+                whileHover={{ x: 6 }}
                 className={`flex items-center gap-4 p-4 rounded-2xl border transition-all duration-300 group ${dark ? 'bg-white/[0.03] border-white/[0.06] hover:border-white/[0.15]' : 'bg-white border-gray-100 shadow-sm hover:shadow-md'}`}>
                 <div className={`w-11 h-11 rounded-xl flex items-center justify-center shrink-0 transition-transform group-hover:scale-110 ${color}`}>
                   <Icon size={18} />
@@ -98,7 +107,7 @@ export default function Contact({ dark }) {
             <div className="grad-btn p-6 rounded-2xl text-white text-center shadow-lg shadow-purple-500/20 mt-2">
               <HiBriefcase size={28} className="mx-auto mb-3 opacity-90" />
               <p className="font-display font-bold text-xl mb-1">Available now</p>
-              <p className="text-white/75 text-sm">Internship · Full-time · Freelance</p>
+              <p className="text-white/75 text-sm">Internship Â· Full-time Â· Freelance</p>
             </div>
           </motion.div>
 
@@ -124,7 +133,7 @@ export default function Contact({ dark }) {
             </div>
             <div>
               <label className={`text-xs font-semibold mb-2 block ${dark ? 'text-gray-400' : 'text-gray-500'}`}>Subject</label>
-              <input name="subject" type="text" placeholder="Internship · Project · Collaboration..."
+              <input name="subject" type="text" placeholder="Internship Â· Project Â· Collaboration..."
                 value={form.subject} onChange={e => setForm(p => ({ ...p, subject: e.target.value }))}
                 onFocus={() => setFocused('subject')} onBlur={() => setFocused(null)} className={fieldClass('subject')} />
             </div>
@@ -146,7 +155,7 @@ export default function Contact({ dark }) {
               <motion.div role="alert" initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }}
                 className={`flex items-center gap-2.5 p-3.5 rounded-xl text-sm font-medium ${dark ? 'bg-green-500/10 text-green-400 border border-green-500/20' : 'bg-green-50 text-green-700 border border-green-200'}`}>
                 <span className="w-2 h-2 bg-green-500 rounded-full animate-pulse" />
-                Message sent! I'll get back to you within 24h. 🎯
+                Message envoyé avec succès ✓
               </motion.div>
             )}
             {submitError && (

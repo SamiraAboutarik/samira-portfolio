@@ -10,6 +10,7 @@ import Navbar             from './components/Navbar'
 import Hero               from './components/Hero'
 import About              from './components/About'
 import Skills             from './components/Skills'
+import Services           from './components/Services'
 import Education         from './components/Education'
 import Projects           from './components/Projects'
 import Stats              from './components/Stats'
@@ -55,6 +56,7 @@ export default function App() {
               <Hero       dark={dark} />
               <About      dark={dark} />
               <div className="section-alt"><Skills dark={dark} /></div>
+              <Services dark={dark} />
               <Education dark={dark} />
               <Projects   dark={dark} />
               <div className="section-alt"><Stats dark={dark} /></div>

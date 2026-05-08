@@ -6,6 +6,7 @@ import { HiSun, HiMoon, HiArrowDownTray, HiBars3, HiXMark } from 'react-icons/hi
 const NAV_LINKS = [
   { id: 'about',      label: 'About' },
   { id: 'skills',     label: 'Skills' },
+  { id: 'services',   label: 'Services' },
   { id: 'Education', label: 'Education' },
   { id: 'projects',   label: 'Projects' },
   { id: 'contact',    label: 'Contact' },

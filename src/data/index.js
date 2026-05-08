@@ -244,10 +244,10 @@ export const TECH_CLOUD = [
 
 // ─── CONTACT INFO ─────────────────────────────────────────────────────────────
 export const CONTACT_INFO = [
-  { icon: '✉️', label: 'Email', value: 'samira.aboutarik@gmail.com', href: 'mailto:samira.aboutarik@gmail.com' },
-  { icon: '💼', label: 'LinkedIn', value: 'linkedin.com/in/samira-aboutarik', href: null },
-  { icon: '🐙', label: 'GitHub', value: 'github.com/SamiraAboutarik', href: 'https://github.com/SamiraAboutarik' },
-  { icon: '📍', label: 'Location', value: 'Agadir, Maroc 🇲🇦', href: null },
+  { icon: 'Email', label: 'Email', value: 'samiraaboutarik45@gmail.com', href: 'mailto:samiraaboutarik45@gmail.com' },
+  { icon: 'WhatsApp', label: 'WhatsApp', value: '+212641322297', href: 'https://wa.me/212641322297' },
+  { icon: 'LinkedIn', label: 'LinkedIn', value: 'linkedin.com/in/samira-aboutarik', href: 'https://www.linkedin.com/in/samira-aboutarik/' },
+  { icon: 'GitHub', label: 'GitHub', value: 'github.com/SamiraAboutarik', href: 'https://github.com/SamiraAboutarik' },
 ]
 // -------------EDUCTION-----------------
 import {  HiComputerDesktop, HiCodeBracket, HiLightBulb } from 'react-icons/hi2'
@@ -283,7 +283,7 @@ export const EducationS = [
 export const CHAT_RESPONSES = {
   skills: 'Samira maîtrise React, Laravel, PHP, JavaScript, Tailwind, Bootstrap, MySQL, MongoDB et Python. Full-Stack avec une passion pour les interfaces modernes ! 💻',
   projects: "Projets concrets : Khdima Link, Portfolio, JobFinder AI, Generator CV, Saluxe, Learning App et Books App. Voir la section Projects 🚀",
-  contact: 'Email, GitHub, LinkedIn — tout est dans la section Contact en bas de page. N\'hésitez pas ! 📬',
+  contact: 'Email, WhatsApp, GitHub, LinkedIn — tout est dans la section Contact en bas de page. N\'hésitez pas ! 📬',
   experience: '2ème année DEVOWFS à l\'OFPPT Maroc, avec des projets réels en Laravel et React. Passionnée par la résolution de problèmes concrets. 🎓',
   bonjour: "Salut ! 👋 Je suis l'assistant virtuel de Samira. Posez-moi des questions sur ses compétences, projets, expérience ou comment la contacter !",
   hello: "Hi! 👋 I'm Samira's virtual assistant. Ask me about her skills, projects, experience, or how to contact her!",
