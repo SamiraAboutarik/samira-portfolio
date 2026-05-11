@@ -276,6 +276,18 @@ export const EducationS = [
     desc: 'Currently studying as a Specialized Technician in Digital Development at OFPPT Ait Melloul. Expected graduation: June 2026.',
     tags: ['Laravel', 'React', 'PHP', 'MySQL', 'Full Stack'],
     current: true,
+  },
+  {
+    id: 3,
+    type: 'experience',
+    Icon: HiCodeBracket,
+    gradient: 'from-cyan-500 to-blue-500',
+    date: 'April 2026',
+    title: 'Full Stack Developer Intern',
+    org: 'YoolEducation - Stage PFE',
+    desc: 'Developed a web app for studio management with automatic sync with YOOL APIs, KPI calculation (occupancy rate, punctuality, incidents) and interactive dashboards per user role: admin, director, technical manager and coordinator.',
+    tags: ['React', 'REST API', 'MySQL', 'Dashboard'],
+    current: false,
   }
   
 ]
